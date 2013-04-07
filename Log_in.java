@@ -75,7 +75,6 @@ public class login   //login class
 	}
 }
 
-
 class LoginPanel extends JPanel //code for login panel
 {
 	private JTextField nameField = new JTextField(10);
@@ -90,7 +89,7 @@ class LoginPanel extends JPanel //code for login panel
 		add(passwordField);
 	}
 
-	public String getName() 	//method for user name
+	public String getName()   //method for user name
 	{
 		return nameField.getText();
 	}
