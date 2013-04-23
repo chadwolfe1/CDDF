@@ -7,11 +7,12 @@ public class Activity {
 
 	// Class parameters
 	
-	String actType, 		// Activity Type such as Phone Call, Meeting, Delivery
-	actDesc, 				// Activity Description, short text describing activity like a small note in an agenda
-	actCase,				// Title of case associated with Activity can be none
-	actAttorney;			// Attorney assigned to Activity
-	Date startDate, endDate;	// Beginning and ending dates associated with activity
+	String actType, 			// Activity Type such as Phone Call, Meeting, Delivery
+	actDesc, 					// Activity Description, short text describing activity like a small note in an agenda
+	actCase,					// Title of case associated with Activity can be none
+	actAttorney,				// Attorney assigned to Activity
+	startDate, 
+	endDate;					// Beginning and ending dates associated with activity
 	Boolean actStatus = false;	// Toggle activity status true if Activity has been completed
 	
 	// Default Constructor
@@ -20,12 +21,12 @@ public class Activity {
 		actDesc = "Description";
 		actCase = "Case";
 		actAttorney = "Attorney";
-		startDate = new Date();
-		endDate = new Date();
+		startDate = "Begin Date";
+		endDate = "End Date";
 		actStatus = false;   
 	}
 	
-	Activity( String t, String d, String c, String a, Date startD, Date endD, Boolean aS ){
+	Activity( String t, String d, String c, String a, String startD, String endD, Boolean aS ){
 		actType = t;
 		actDesc = d;
 		actCase = c;
@@ -48,10 +49,10 @@ public class Activity {
 	void setActAttorney(String actAtt){
 		actAttorney = actAtt;
 	}
-	void setStartDate(Date actStart){
+	void setStartDate(String actStart){
 		startDate = actStart;
 	}
-	void setEndDate(Date actEnd){
+	void setEndDate(String actEnd){
 		endDate = actEnd;
 	}
 	void setStatus(Boolean status){
@@ -72,52 +73,14 @@ public class Activity {
 	String getActAttorney(){
 		return actAttorney;
 	}
-	Date getStartDate(){
+	String getStartDate(){
 		return startDate;
 	}
-	Date getEndDate(){
+	String getEndDate(){
 		return endDate;
 	}
 	Boolean getStatus(){
 		return actStatus;
-	}
-	
-	// Activity Functions/ potential ActivityManager class Functions
-	void actForm(){
-		
-		// Button to create Activities			"Create New Activity"
-		
-		// Button To list All Activities			"List All Activities"
-		
-		// Button to list Uncompleted Activities	"List Activities in progress"
-		
-		// Button to list Completed Activities 		"List Completed Activity History"
-		
-		
-	}
-	
-	// Display Java window to create a new Activity
-	void actCreateForm(){
-		
-	}
-	
-	// Display a list of all activities
-	void listAllActs(){	
-		//connect to database
-			// retrieve all activities from db
-				// store into an array of activities
-					// orderByDate()
-		// display activity list
-	}
-	
-	
-	// Delete Activity
-	void deleteActivity(Activity actDel){
-		// activity chosen by mouse click
-			// db should still be open
-				// confirm deletion
-				// search database for activity
-				// remove db entry for activity
 	}
 	
 	public String toString(){
