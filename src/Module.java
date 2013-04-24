@@ -1,13 +1,15 @@
 import java.util.LinkedList;
-
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 
 abstract class Module {
 
-	String modulecode;
+	String modulecode = "BASE";
+	String module_filename = "";
+	LinkedList<String>columnNames = new LinkedList<String>();
 	
-	LinkedList<String>columnNames;
-	LinkedList<Object>moduleData;
 	
 	boolean loaded = false;
 	String[] errors = {};
@@ -16,10 +18,6 @@ abstract class Module {
 	 */
 	Module(){
 		
-		this.columnNames = new LinkedList<String>();
-		this.moduleData = new LinkedList<Object>();
-		
-		this.setModuleCode("BASE");
 	}
 	
 	/**
@@ -59,9 +57,6 @@ abstract class Module {
 	 */
 	void formEdit()
 	{
-		
-		
-		
 	}//end method
 	
 	/**
@@ -120,6 +115,14 @@ abstract class Module {
 		this.columnNames.add(cn);
 	}
 	
+	int getColumNameSize(){
+		return this.columnNames.size();
+	}
+	
+	String getColumNameIndex(int index){
+		return this.columnNames.get(index);
+	}
+	
 	/**
 	 * Returns list of columns 
 	 * @return
@@ -130,35 +133,6 @@ abstract class Module {
 		return columns;
 	}
 	
-
-	/**
-	 * Sets module column
-	 * @param cn
-	 */
-	void setModuleData(Object record){
-		this.moduleData.add(record);
-	}
-	
-	/**
-	 * Returns data from csv file must be set per module
-	 * @return
-	 */
-	Object[][] getModuleDataArray(){
-		
-		//read file
-		//allocate records 
-		Object[][] data = {
-				{ "Kathy", "Smith", "Snowboarding", new Integer(5),	new Boolean(false) },
-				{ "John", "Doe", "Rowing", new Integer(3), new Boolean(true) },
-				{ "Sue", "Black", "Knitting", new Integer(2),	new Boolean(false) },
-				{ "Jane", "White", "Speed reading", new Integer(20),	new Boolean(true) },
-				{ "Joe", "Brown", "Pool", new Integer(10), new Boolean(false) } };
-		//String[][] data = this.moduleData.toArray(new String[this.columnNames.size()]);
-		
-		
-		
-		return data;
-	}
 	
 	/**
 	 * Just a method to debug
@@ -166,4 +140,20 @@ abstract class Module {
 	void dump(){
 		System.out.println("The debug method for Module: "+this.getModuleCode());
 	}
+	
+	
+	void initModuleDataFile(String filename){
+				
+		try{
+			FileOutputStream fos = new FileOutputStream(filename);
+			PrintWriter dos = new PrintWriter(fos);
+			dos.close();
+			fos.close();
+		}catch (IOException e) {
+			System.out.println(Constants.GEN_ERR_CANNOT_OPEN_FILE);
+		}
+		
+	}
+	
+		
 }//end class

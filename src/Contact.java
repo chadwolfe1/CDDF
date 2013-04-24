@@ -1,27 +1,26 @@
 import java.awt.GridLayout;
 import java.util.Date;
 
-import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 
 public class Contact extends Module
 {
 
 	
-	String modulecode;
 	
-	String firstname, lastname;
-	Integer contactType;
-	String phone, fax;
-	Date creationDate;
-	Integer customerId = 0, customerStatus = 0;
+	String modulecode = "CONT";
+	String firstname = ""; 
+	String lastname = "";
+	Integer contactType = 0;
+	String phone = "";
+	String fax = "";
+	Date creationDate = null;
+	Integer customerId = 0;
+	Integer customerStatus = 0;
 	
 	
 	/**
@@ -29,16 +28,16 @@ public class Contact extends Module
 	 */
 	Contact(){
 		
-		super();//Call parent to init columns and data
-		this.setModuleCode("CONTACT");
-		
-		this.setColumNames("First Name");
-		this.setColumNames("Last Name");
-		this.setColumNames("Sport");
-		this.setColumNames("# of Years");
-		this.setColumNames("Vegetarian"); 
-		
 	}
+	
+	Contact (String firstname, String lastname, String phone)
+	{
+		this.setFirstname(firstname);
+		this.setLastname(lastname);
+		this.setPhone(phone);
+	}
+	
+
 	
 	/**
 	 * @see Module::formEdit()
@@ -84,6 +83,7 @@ public class Contact extends Module
 	    	
 	    	this.setFirstname(fl1.getText());
 	    	this.setLastname(fl2.getText());
+	    	this.setPhone(fl5.getText());
 	    	if(this.validateRecord())
 	    	{
 	    		this.setLoaded(true);//setting flag.
@@ -115,36 +115,8 @@ public class Contact extends Module
 	 */
 	void searchRecord(){
 		
-		JFrame frame = new JFrame(Constants.CONT_MOD_TITLE);
-		JPanel panel = new JPanel();
-		
-		String[] columnNames = this.getColumNamesArray();
-		Object[][] data = this.getModuleDataArray();
-		
-		/*Object[][] data = {
-				{ "Kathy", "Smith", "Snowboarding", new Integer(5),	new Boolean(false) },
-				{ "John", "Doe", "Rowing", new Integer(3), new Boolean(true) },
-				{ "Sue", "Black", "Knitting", new Integer(2),	new Boolean(false) },
-				{ "Jane", "White", "Speed reading", new Integer(20),	new Boolean(true) },
-				{ "Joe", "Brown", "Pool", new Integer(10), new Boolean(false) } };*/
-		final JTable table = new JTable(data, columnNames);
-		
-		//table.setPreferredScrollableViewportSize(getToolkit().getScreenSize());
-		table.setFillsViewportHeight(true);
-
-		// Create the scroll pane and add the table to it.
-		JScrollPane scrollPane = new JScrollPane(table);
-
-		// Add the scroll pane to this panel.
-		panel.add(scrollPane);
-		panel.add(new JButton("Modify"));
-		panel.add(new JButton("Delete"));
-		panel.add(new JLabel(""));
-		panel.add(new JButton("Close"));
-		
-		frame.add(panel);
-		frame.setSize(550, 600);
-		frame.setVisible(true);
+		ContactList list = new ContactList();
+		list.displayList();
 		
 	}
 	
@@ -177,23 +149,14 @@ public class Contact extends Module
 		
 	}
 	
-	
-	
 	/**
 	 * @see Module::loadRecord()
 	 */
 	void saveRecord(){
-	
-		//Just adding a string with separators. Constants holds the character sep.
-		String line = this.getFirstname()
-				+Constants.CSV_FIELD_SEPARATOR
-				+this.getLastname()
-				+Constants.CSV_FIELD_SEPARATOR
-				+this.getPhone()
-				+Constants.CSV_ROW_SEPARATOR;
-		String data_File = Constants.APP_DATA_FOLDER+"/contacts.csv";
-		TheFile f = new TheFile(data_File);
-		f.appendFile(line);
+		
+		ContactList list = new ContactList();
+		list.setContact(this);
+		list.saveFile();
 		
 	}
 	
@@ -219,7 +182,7 @@ public class Contact extends Module
 	}
 	
 	//--------------------------------
-	//Now Local assessors and setters
+	//Assessors and setters
 	//--------------------------------
 	
 	
@@ -245,6 +208,16 @@ public class Contact extends Module
 	
 	void setPhone(String phone){
 		this.phone = phone;
+	}
+	
+	/**
+	 * Returns string formated as csv
+	 * @return
+	 */
+	public String writeString(){
+		return (this.getFirstname()+Constants.CSV_FIELD_SEPARATOR +
+				this.getLastname()+Constants.CSV_FIELD_SEPARATOR +
+				this.getPhone()+Constants.CSV_FIELD_SEPARATOR);
 	}
 	
 }//end class

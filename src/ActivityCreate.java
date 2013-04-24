@@ -81,6 +81,7 @@ public class ActivityCreate extends JFrame{
 		pack(); 
 		setVisible(true); 
 	} 
+	
 	private class ButtonHandler implements ActionListener 
 	{ 
 		public void actionPerformed (ActionEvent e) 

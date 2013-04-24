@@ -31,9 +31,11 @@ public interface Constants {
 	String CONT_FIRSTNAME = "Firstname";
 	String CONT_LASTNAME = "Lastname";
 	
-
+	String GEN_ERR_CANNOT_OPEN_FILE = "Invalid File";
 	//Csv Constants
 	String APP_DATA_FOLDER = System.getProperty("user.dir")+"/data";
+	String APP_CONTACT_FILE = Constants.APP_DATA_FOLDER+"/contacts.csv";
+	
 	String CSV_FIELD_SEPARATOR = "\t";
 	String CSV_ROW_SEPARATOR = "\r\n";
 	
