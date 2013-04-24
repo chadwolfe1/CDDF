@@ -139,8 +139,14 @@ abstract class Module {
 		this.moduleData.add(record);
 	}
 	
-	
-	Object[][] getModuleDataArray(){
+	/**
+	 * Returns data from csv file must be set per module
+	 * @return
+	 */
+	Object[][] getModuleDataArray(String filename){
+		
+		//read file
+		//allocate records 
 		Object[][] data = {
 				{ "Kathy", "Smith", "Snowboarding", new Integer(5),	new Boolean(false) },
 				{ "John", "Doe", "Rowing", new Integer(3), new Boolean(true) },
@@ -148,6 +154,9 @@ abstract class Module {
 				{ "Jane", "White", "Speed reading", new Integer(20),	new Boolean(true) },
 				{ "Joe", "Brown", "Pool", new Integer(10), new Boolean(false) } };
 		//String[][] data = this.moduleData.toArray(new String[this.columnNames.size()]);
+		
+		
+		
 		return data;
 	}
 	

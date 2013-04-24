@@ -1,4 +1,3 @@
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -6,8 +5,6 @@ import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 /**
  * Application Main Class
