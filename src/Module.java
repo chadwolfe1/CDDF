@@ -143,7 +143,7 @@ abstract class Module {
 	 * Returns data from csv file must be set per module
 	 * @return
 	 */
-	Object[][] getModuleDataArray(String filename){
+	Object[][] getModuleDataArray(){
 		
 		//read file
 		//allocate records 
