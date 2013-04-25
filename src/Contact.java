@@ -1,11 +1,14 @@
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Date;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 
 public class Contact extends Module
 {
@@ -22,6 +25,7 @@ public class Contact extends Module
 	Integer customerId = 0;
 	Integer customerStatus = 0;
 	
+	JTextField fl1, fl2, fl3, fl5;
 	
 	/**
 	 * Constructor
@@ -37,48 +41,64 @@ public class Contact extends Module
 		this.setPhone(phone);
 	}
 	
-
+	Contact (String[] row)
+	{
+		
+		if(row.length==0) return;
+		this.setFirstname(row[0]);
+		this.setLastname(row[1]);
+		this.setPhone(row[2]);
+	}
 	
 	/**
 	 * @see Module::formEdit()
 	 */
-	void formEdit()
+	//void formEdit(JPanel panel)
+	void formEdit(ContactList cl)
 	{
 		
 		
 		//Build a panel
-		JPanel panel = new JPanel(new GridLayout(0, 1));
-		
-		
+		JPanel panel1 = new JPanel(new GridLayout(0, 2));
+
+		panel1.setPreferredSize(new Dimension(400,200));
 		//Adding Fields to the form
-	    JTextField fl1 = new JTextField(this.getFirstname());
-	    panel.add(new JLabel(Constants.CONT_FIRSTNAME+":"));
-	    panel.add(fl1);
+		
+		panel1.add(new JLabel("Contact Form"));
+		panel1.add(new JLabel(""));
+		
+		JTextField fl1 = new JTextField(this.getFirstname());
+	    panel1.add(new JLabel(Constants.CONT_FIRSTNAME+":"));
+	    panel1.add(fl1);
 	    
 	    JTextField fl2 = new JTextField(this.getLastname());
-	    panel.add(new JLabel("Lastname:"));
-	    panel.add(fl2);
+	    panel1.add(new JLabel("Lastname:"));
+	    panel1.add(fl2);
+	    
+	    JTextField fl5 = new JTextField(this.getPhone());
+	    panel1.add(new JLabel("Phone:"));
+	    panel1.add(fl5);
+		
+	    JTextField fl6 = new JTextField(this.getLastname());
+	    panel1.add(new JLabel("Fax:"));
+	    panel1.add(fl6);
+	    
 	    
 	    String[] items1 = {"Customer", "Attorney", "Administrator", "Paralegal", "Other"};
 	    JComboBox fl3 = new JComboBox(items1);
-	    panel.add(new JLabel("Contact Type:"));
-		panel.add(fl3);
+	    panel1.add(new JLabel("Contact Type:"));
+		panel1.add(fl3);
 		
 		String[] items2 = { "Inactive", "Active"};
 	    JComboBox fl4 = new JComboBox(items2);
-	    panel.add(new JLabel("Contact Status:"));
-		panel.add(fl4);
-	    
-		JTextField fl5 = new JTextField(this.getLastname());
-	    panel.add(new JLabel("Phone:"));
-	    panel.add(fl5);
+	    panel1.add(new JLabel("Contact Status:"));
+		panel1.add(fl4);
 		
-	    JTextField fl6 = new JTextField(this.getLastname());
-	    panel.add(new JLabel("Fax:"));
-	    panel.add(fl6);
-
+		panel1.add(new JLabel(""));
+		panel1.add(new JLabel(""));
+	   
 	    
-	    int result = JOptionPane.showConfirmDialog(null, panel, Constants.CONT_MOD_TITLE, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+	    int result = JOptionPane.showConfirmDialog(null, panel1, Constants.CONT_MOD_TITLE, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 	    if (result == JOptionPane.OK_OPTION) {
 	    	
 	    	this.setFirstname(fl1.getText());
@@ -87,13 +107,16 @@ public class Contact extends Module
 	    	if(this.validateRecord())
 	    	{
 	    		this.setLoaded(true);//setting flag.
-	    		this.saveRecord();
+	    		
+	    		
+	    		this.saveRecord(cl);
+	    		
 	    		OutputBox.display(0, Constants.CONT_MOD_TITLE, Constants.GEN_LBL_THANKYOU);
 	    		
 	    	}else{
 	    		
 	    		this.setLoaded(false);//setting flag.
-	    		this.formEdit();
+	    		this.formEdit(cl);
 	    		
 	    	}
 	    	
@@ -104,21 +127,11 @@ public class Contact extends Module
 	    	this.setLoaded(false);
 
 	    }
-
+	     
 		
 		
 	}
 	
-	
-	/**
-	 * @see Module::searchRecord()
-	 */
-	void searchRecord(){
-		
-		ContactList list = new ContactList();
-		list.displayList();
-		
-	}
 	
 	/**
 	 * @see Module::validateRecord()
@@ -128,7 +141,20 @@ public class Contact extends Module
 		//Validating first name
 		if(this.getFirstname().equals("")){
 			//Just a little note
-			OutputBox.alert(Constants.CONT_MOD_TITLE, "Invalid Firstname");
+			OutputBox.alert(Constants.CONT_MOD_TITLE, "Invalid First name");
+			return false;
+		}
+		
+		if(this.getLastname().equals("")){
+			//Just a little note
+			OutputBox.alert(Constants.CONT_MOD_TITLE, "Invalid Last name");
+			return false;
+		}
+		
+		
+		if(this.getPhone().equals("")){
+			//Just a little note
+			OutputBox.alert(Constants.CONT_MOD_TITLE, "Invalid Phone");
 			return false;
 		}
 		
@@ -152,11 +178,10 @@ public class Contact extends Module
 	/**
 	 * @see Module::loadRecord()
 	 */
-	void saveRecord(){
+	void saveRecord(ContactList cl){
 		
-		ContactList list = new ContactList();
-		list.setContact(this);
-		list.saveFile();
+		cl.addContactList(this);
+		cl.saveFile();
 		
 	}
 	
@@ -219,5 +244,7 @@ public class Contact extends Module
 				this.getLastname()+Constants.CSV_FIELD_SEPARATOR +
 				this.getPhone()+Constants.CSV_FIELD_SEPARATOR);
 	}
+	
+	
 	
 }//end class

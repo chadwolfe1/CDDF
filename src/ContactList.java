@@ -1,4 +1,4 @@
-import java.awt.Dimension;
+import java.awt.BorderLayout;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -6,51 +6,52 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JFrame;
-
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
-
+/**
+ * Contact List Class
+ * @author Francisco santana
+ *
+ */
 public class ContactList extends Module{
 
-	final static List<Contact> contacts = new ArrayList<Contact>();		// List of contacts
 	
-	
-	
-	ContactList(){
-		
-		//From module method
-		/*this.setColumNames("ID");
-		this.setColumNames("Firstname");
-		this.setColumNames("Last Name");
-		this.setColumNames("Phone");*/
-		
-		//Load data file
-		readFile();
-		
-	}
-
-	
-	static DefaultTableModel model = new DefaultTableModel() {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public boolean isCellEditable(int row, int column) {
-			//all cells false
-			return false;
-		}
-	};
-	
+	DefaultTableModel contactList = null;
 	
 	/**
+	 * Constructor
+	 */
+	ContactList(){
+		
+		/**
+		 * Contact list
+		 */
+		this.contactList = new DefaultTableModel(){
+			
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				//all cells false
+				return false;
+			} 
+		};
+		
+		//contactList.addColumn("ID");
+		contactList.addColumn("Firstname");
+		contactList.addColumn("Lastname");
+		contactList.addColumn("Phone");
+
+		
+		//From module method
+		readFile();
+	
+	}
+		
+	
 	 /* 
 	 * @param s
 	 * @return
@@ -60,50 +61,31 @@ public class ContactList extends Module{
 		return new Contact(line[0], line[1], line[2]);		
 	}
 	
-	
-	/**
-	 * Adds contact to the list
-	 * @param c
-	 */
-	void setContact(Contact c){
-		contacts.add(c);
+	void addContactList(Contact c){
+		String[] row = { c.getFirstname(), c.getLastname(),	c.getPhone()};
+		contactList.addRow(row);
 	}
-	
 	
 	/**
 	 * Display the contact list
 	 */
-	public void displayList(){
+	void getDisplayList(JPanel panel){
 		
+		JTable table = new JTable(contactList);
 		
-		//model.addColumn("ID");
-		model.addColumn("Firstname");
-		model.addColumn("Lastname");
-		model.addColumn("Phone");
-		
-		// Load list
-		for (int i = 0; i < contacts.size(); i++)
-		{
-			Object[] row = {/*i,*/ 
-							contacts.get(i).getFirstname(),
-							contacts.get(i).getLastname(),
-							contacts.get(i).getPhone()
-							};
-			model.addRow(row);
-		}
-		
-		JFrame frame = new JFrame(Constants.CONT_MOD_TITLE);
-		JTable table = new JTable(model);
-		
-		frame.setPreferredSize(new Dimension(700,400));
-		frame.add( new JScrollPane( table ));
-		frame.pack();
+		table.setPreferredScrollableViewportSize(panel.getPreferredSize());
+		table.setFillsViewportHeight(true);
 
-		// on close window listeners
-		//frame.addWindowListener(new WindowEventHandler());
-		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		frame.setVisible( true ); 
-	}
+		// Create the scroll pane and add the table to it.
+		JScrollPane scrollPane = new JScrollPane(table);
+		
+		// Add the scroll pane to this panel.
+		panel.removeAll();
+		panel.add(scrollPane, BorderLayout.CENTER);
+		
+		
+		
+	}//end method
 	
 	
 	/**
@@ -113,14 +95,16 @@ public class ContactList extends Module{
 	{
 		
 		//Populate list
-		String line;
-		
+		String line = "";
+				
 		try{
 			BufferedReader reader = new BufferedReader(new FileReader(Constants.APP_CONTACT_FILE));
 			try {
 				
 				while ((line = reader.readLine()) != null) {
-					this.setContact(this.parseLine(line));
+					
+					Contact c = this.parseLine(line);
+					addContactList(c);
 				}
 				
 			}catch (IOException e) {
@@ -143,13 +127,21 @@ public class ContactList extends Module{
 		}
 	}
 	
+	
+	/**
+	 * Saves Contact List to File
+	 */
 	void saveFile(){
 		 try{
 				FileOutputStream fos = new FileOutputStream(Constants.APP_CONTACT_FILE, false);
 				PrintWriter dos = new PrintWriter(fos);
-				for( int i = 0 ; i < contacts.size() ; i++ ) {
-					dos.println((contacts.get(i).writeString()));
-				}
+				
+				for(int i=0; i<contactList.getRowCount(); i++)
+			    {
+					Contact cont = getRowContact(i);
+					dos.println((cont.writeString()));					
+			    }				
+				
 				dos.close();
 				fos.close();
 
@@ -158,5 +150,48 @@ public class ContactList extends Module{
 				System.out.println("File Error");
 			}
 	}
+	
+	
+	/**
+	 * Returns contact from List
+	 * @param rowIndex
+	 * @return
+	 */
+	public String[] getRowData(int rowIndex)
+    {
+        //test the index
+        if (contactList.getRowCount()==0 || rowIndex < 0)
+        {
+            return null;
+        }
+        
+        ArrayList < String >  data = new ArrayList < String > ();
+        for (int col = 0; col  <  contactList.getColumnCount(); col++)
+        {
+            data.add((String) contactList.getValueAt(rowIndex, col));
+        }
+        
+        String[] retVal = new String[data.size()];
+        for (int i = 0; i  <  retVal.length; i++)
+        {
+            retVal[i] = data.get(i);
+        }
+        return retVal;
+    }
 
+	/**
+	 * Builds contact object from row
+	 * @param rowIndex
+	 * @return
+	 */
+	public Contact getRowContact(int rowIndex){
+		
+		return new Contact(getRowData(rowIndex));
+		
+	}
+	
+
+	
+	
+	
 }
