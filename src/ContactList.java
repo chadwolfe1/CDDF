@@ -85,6 +85,19 @@ public class ContactList extends Module {
 		String[] row = { c.getFirstname(), c.getLastname(), c.getPhone(), c.getFax(), c.getContactType().toString(), c.getCustomerStatus().toString() };
 		contactList.addRow(row);
 	}
+	
+	Contact parseEntry(String[] line)
+	{
+		return new Contact(getArrayIndex(line, 0), getArrayIndex(line, 1), getArrayIndex(line, 2), 
+				getArrayIndex(line, 3), getArrayIndex(line, 4), getArrayIndex(line, 5));
+	}
+	
+	Integer rowCount()
+	{
+		return contactList.getRowCount();
+	}
+	
+
 
 	/**
 	 * Update contact list row
