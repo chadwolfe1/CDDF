@@ -137,22 +137,12 @@ public class Window extends JFrame {
 			} else if (e.getActionCommand().equalsIgnoreCase("Create Case")) {
 				Case cs = new Case();
 				cs.FormEdit(csl);
-<<<<<<< HEAD
-
 			} else if (e.getActionCommand().equalsIgnoreCase("List Cases")) {
-=======
-				
->>>>>>> 33be9adfa745eb3ee5dc1c99cf4289de42ca6550
-
 				csl.getCaseList(panel);
-				
-<<<<<<< HEAD
 			} else if (e.getActionCommand().equalsIgnoreCase("Help")) {
 				//This may be help
 				OutputBox.display(0, Constants.MAIN_WIN_TITLE, Constants.HELP);
-=======
 				csl.getCaseList(panel);
->>>>>>> 33be9adfa745eb3ee5dc1c99cf4289de42ca6550
 				
 			} else if (e.getActionCommand().equalsIgnoreCase("About Us")) {
 				//This may be about us
