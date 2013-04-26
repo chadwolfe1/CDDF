@@ -19,6 +19,7 @@ public class Window extends JFrame {
 	private JPanel panel = new JPanel();
 
 	ContactList cl;
+	CaseList caselist;
 	
 	/**
 	 * Create the GUI and show it. For thread safety, this method should be
