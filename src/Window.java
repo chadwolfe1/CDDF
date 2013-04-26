@@ -42,6 +42,9 @@ public class Window extends JFrame {
 		//Contact module list
 		cl = new ContactList();
 		
+		//Case module list
+		caselist = new CaseList();
+		
 		JTextArea welcome = new JTextArea("Welcome to Case Management System\nCDDF Enterprises");
 		welcome.setBackground(Color.white);
 		panel.add(welcome, BorderLayout.CENTER);
@@ -123,8 +126,13 @@ public class Window extends JFrame {
 				//c.formEdit(panel);
 				c.formEdit(cl);
 				
+			}else if(e.getActionCommand().equalsIgnoreCase("Create Case")){
+				Case cs = new Case();
+				cs.FormEdit(caselist);
+
+			}else if(e.getActionCommand().equalsIgnoreCase("List Cases")){
 				
-			//Case actions
+				caselist.getCaseList(panel);
 				
 			//etc
 			}else if(e.getActionCommand().equalsIgnoreCase("Exit")){
@@ -158,7 +166,7 @@ public class Window extends JFrame {
 		menuItem2.addActionListener(new MenuAction(panel));
 		menu.add(menuItem2);
 		
-		JMenuItem menuItem3 = new JMenuItem("Cases");
+		JMenuItem menuItem3 = new JMenuItem("List Cases");
 		menuItem3.addActionListener(new MenuAction(panel));
 		menu.add(menuItem3);
 		
@@ -180,6 +188,19 @@ public class Window extends JFrame {
 		JMenuItem ContmenuItem2 = new JMenuItem("Create Contact");
 		ContmenuItem2.addActionListener(new MenuAction(panel));
 		contmenu.add(ContmenuItem2);
+		
+		//Case Menu
+		JMenu casemenu = new JMenu("Cases");
+		menubar.add(casemenu);
+				
+		JMenuItem CaseMenuItem1 = new JMenuItem("List Cases");
+		CaseMenuItem1.addActionListener(new MenuAction(panel));
+		casemenu.add(CaseMenuItem1);
+		
+		JMenuItem CaseMenuItem2 = new JMenuItem("Create Case");
+		CaseMenuItem2.addActionListener(new MenuAction(panel));
+		casemenu.add(CaseMenuItem2);
+
 		
 		
 		setJMenuBar(menubar);
