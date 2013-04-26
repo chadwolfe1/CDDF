@@ -4,16 +4,17 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.*;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Case Class
@@ -26,6 +27,7 @@ public class Case extends Module {
   private String caseNumber;
 	private String caseName;
 	private String caseDescription;
+	private String caseClient;
 	private String lawyer;
 	private String paralegal;
 	private String status;
@@ -34,19 +36,22 @@ public class Case extends Module {
 	Integer casenumber = 0;
 	String casename = "";
 	String casedesc = "";
+	String caseclient = "";
 	Date createdate = null;
 	
-	JTextField cf0, cf1, cf2, cf3, cf4;
+	JTextField cf0, cf1, cf2, cf3, cf4, cf5;
 
 	private ObjectOutputStream output;
-	private ObjectInputStream input;
 
+	DefaultTableModel contactList = null;
+	JTable contactTable = null;
 
-public Case(String num, String name, String desc, String law, String para, String stat)
+public Case(String num, String name, String desc, String cname, String law, String para, String stat)
 {
 		setCaseNumber(num);
 		setCaseName(name);
 		setCaseDescription(desc);
+		setClientName(cname);
 		setLawyer(law);
 		setParalegal(para);
 		setStatus(stat);
@@ -54,7 +59,7 @@ public Case(String num, String name, String desc, String law, String para, Strin
 
 public Case()
 {
-	this("","","","","","");
+	this("","","","","","", "");
 }
 
 public Case(String[] row)
@@ -64,13 +69,14 @@ public Case(String[] row)
 	this.setCaseNumber(row[0]);
 	this.setCaseName(row[1]);
 	this.setCaseDescription(row[2]);
-	this.setLawyer(row[3]);
-	this.setParalegal(row[4]);
-	this.setStatus(row[5]);
+	this.setClientName(row[3]);
+	this.setLawyer(row[4]);
+	this.setParalegal(row[5]);
+	this.setStatus(row[6]);
 
 }
 
-public void FormEdit(CaseList caselist)
+public void FormEdit(CaseList caselist, ContactList contactlist, boolean createRow)
 {
 	
 	JPanel panel2 = new JPanel(new GridLayout(0,2));
@@ -92,18 +98,43 @@ public void FormEdit(CaseList caselist)
 	panel2.add(new JLabel("Case Description: "));
 	panel2.add(cf2);
 	
-	JTextField cf3 = new JTextField(this.getLawyer());
-	panel2.add(new JLabel("Case Lawyer: "));
+	Vector clientnames = new Vector();
+	Vector lawyernames = new Vector();
+	Vector paranames = new Vector();
+	
+	clientnames.add("Select a Client");
+	lawyernames.add("Select an Attorney");
+	paranames.add("Select a Paralegel");
+	
+	
+	for (int i =0; i < contactlist.rowCount(); i++)
+	{
+		Contact contact = contactlist.getRowContact(i);
+		if (contact.getContactType() == "Customer")
+			clientnames.add(contact.getLastname());	
+		else if (contact.getContactType() == "Attorney")
+			lawyernames.add(contact.getLastname());	
+		else if (contact.getContactType() == "Paralegal")
+			paranames.add(contact.getLastname());	
+	}
+
+	
+	JComboBox cf3 = new JComboBox(clientnames);
+	panel2.add(new JLabel("Client: "));
 	panel2.add(cf3);
 	
-	JTextField cf4 = new JTextField(this.getParalegal());
-	panel2.add(new JLabel("Case Paralegal: "));
+	JComboBox cf4 = new JComboBox(lawyernames);
+	panel2.add(new JLabel("Case Lawyer: "));
 	panel2.add(cf4);
 	
-	String[] items3 = {"Inactive", "Active"};
-	JComboBox cf5 = new JComboBox(items3);
-	panel2.add(new JLabel("Case Status: "));
+	JComboBox cf5 = new JComboBox(paranames);
+	panel2.add(new JLabel("Case Paralegal: "));
 	panel2.add(cf5);
+	
+	String[] items3 = {"Inactive", "Active"};
+	JComboBox cf6 = new JComboBox(items3);
+	panel2.add(new JLabel("Case Status: "));
+	panel2.add(cf6);
 	
 	panel2.add(new JLabel (""));
 	panel2.add(new JLabel (""));
@@ -116,9 +147,10 @@ public void FormEdit(CaseList caselist)
 		this.setCaseNumber(cf0.getText());
 		this.setCaseName(cf1.getText());
 		this.setCaseDescription(cf2.getText());
-		this.setLawyer(cf3.getText());
-		this.setParalegal(cf4.getText());
-		if (cf5.getSelectedIndex()==0)
+		this.setClientName(cf3.getSelectedItem().toString());
+		this.setLawyer(cf4.getSelectedItem().toString());
+		this.setParalegal(cf5.getSelectedItem().toString());
+		if (cf6.getSelectedIndex()==0)
 			this.setStatus("Inactive");
 		else
 			this.setStatus("Active");
@@ -133,7 +165,7 @@ public void FormEdit(CaseList caselist)
 		else
 		{
 			this.setLoaded(false);
-			this.FormEdit(caselist);
+			this.FormEdit(caselist, contactlist, createRow);
 		}
 	}
 		else
@@ -146,7 +178,7 @@ public void FormEdit(CaseList caselist)
 
 	boolean validateRecord()
 	{
-		if(this.getCaseNumber().equals("") || this.getCaseName().equals("") || this.getCaseDescription().equals("") || this.getLawyer().equals("") || this.getParalegal().equals(""))
+		if (this.getCaseNumber().equals("") || this.getCaseName().equals("") || this.getCaseDescription().equals("") || this.getLawyer().equals("") || this.getParalegal().equals("") || this.getClientName().equals(""))
 		{
 			OutputBox.alert("Case Module",  "Please fill in all fields");
 			return false;
@@ -237,6 +269,16 @@ public void FormEdit(CaseList caselist)
 	{
 		return caseDescription;
 	}
+	
+	public void setClientName(String client)
+	{
+		caseClient = client;
+	}
+	
+	public String getClientName()
+	{
+		return caseClient;
+	}
 
 	public void setLawyer(String law)
 	{
@@ -272,6 +314,7 @@ public void FormEdit(CaseList caselist)
 		return (this.getCaseNumber()+Constants.CSV_FIELD_SEPARATOR +
 				this.getCaseName()+Constants.CSV_FIELD_SEPARATOR +
 				this.getCaseDescription()+Constants.CSV_FIELD_SEPARATOR +
+				this.getClientName()+Constants.CSV_FIELD_SEPARATOR +
 				this.getLawyer()+Constants.CSV_FIELD_SEPARATOR +
 				this.getParalegal()+Constants.CSV_FIELD_SEPARATOR +
 				this.getStatus()+Constants.CSV_FIELD_SEPARATOR );
