@@ -1,6 +1,5 @@
-import java.awt.BorderLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -9,10 +8,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -23,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 public class CaseList extends Module{
 
   DefaultTableModel caseList = null;
+  JTable caseTable = null;
 	
 	CaseList()
 	{
@@ -41,44 +44,100 @@ public class CaseList extends Module{
 		caseList.addColumn("Case Number");
 		caseList.addColumn("Case Name");
 		caseList.addColumn("Case Description");
+		caseList.addColumn("Client");
 		caseList.addColumn("Case Lawyer");
 		caseList.addColumn("Case Paralegal");
 		caseList.addColumn("Case Status");
 		
+		caseTable = new JTable(caseList);
+		caseTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		readFile();
 	}
 	
 	Case parseLine(String sline){
 		String[] line = sline.split(Constants.CSV_FIELD_SEPARATOR);
-		return new Case(line[0], line[1], line[2], line[3], line[4], line[5]);		
+		//return new Case(line[0], line[1], line[2], line[3], line[4], line[5], line[6]);		
+		return new Case(getArrayIndex(line, 0), getArrayIndex(line, 1), getArrayIndex(line, 2), 
+				getArrayIndex(line, 3), getArrayIndex(line, 4), getArrayIndex(line, 5), getArrayIndex(line, 6));
 	}
 	
 	void addCaseList(Case cs){
-		String[] row = { cs.getCaseNumber(), cs.getCaseName(), cs.getCaseDescription(), cs.getLawyer(), cs.getParalegal(), cs.getStatus() };
+		String[] row = { cs.getCaseNumber(), cs.getCaseName(), cs.getCaseDescription(), cs.getClientName(), cs.getLawyer(), cs.getParalegal(), cs.getStatus() };
 		caseList.addRow(row);
 	}
 	
+	void updateCaseListRow(Case cs, int row)
+	{
+		caseList.setValueAt(cs.getCaseNumber(),  row,  0);
+		caseList.setValueAt(cs.getCaseName(),  row,  1);
+		caseList.setValueAt(cs.getCaseDescription(),  row,  2);
+		caseList.setValueAt(cs.getClientName(),  row,  3);
+		caseList.setValueAt(cs.getLawyer(),  row,  4);
+		caseList.setValueAt(cs.getParalegal(),  row,  5);
+		caseList.setValueAt(cs.getStatus(),  row,  6);
+	}
+	
+	
 	/**
-	 * Display the contact list
+	 * Display the case list
 	 */
-	void getCaseList(JPanel panel){
-		
-		JTable table = new JTable(caseList);
-		
-		table.setPreferredScrollableViewportSize(panel.getPreferredSize());
-		table.setFillsViewportHeight(true);
-
-		// Create the scroll pane and add the table to it.
-		JScrollPane scrollPane = new JScrollPane(table);
+	void getCaseList(JPanel panel, final ContactList contact){
 		
 		// Add the scroll pane to this panel.
 		panel.removeAll();
-		panel.add(scrollPane, BorderLayout.CENTER);
-		
-		
-		
-	}//end method
+
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		caseTable.setPreferredScrollableViewportSize(panel
+				.getPreferredSize());
+		caseTable.setFillsViewportHeight(true);
+
+		// Create the scroll pane and add the table to it.
+		JScrollPane scrollPane = new JScrollPane(caseTable);
+		panel.add(scrollPane);
+
+		JPanel panelb = new JPanel();
+		// Update Button
+		JButton updateBtn = new JButton("Update");
+		// updateBtn.setPreferredSize(new Dimension(200,30));
+		panelb.add(updateBtn);
+		updateBtn.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+
+				// Update
+				int selected = caseTable.getSelectedRow();
+				Case x = getRowCase(selected);
+				x.FormEdit(new CaseList(), contact, false);
+				updateCaseListRow(x, selected);
+				saveFile();
+			}
+		});
+
+		// Delete Button
+		JButton deleteBtn = new JButton("Delete");
+		// deleteBtn.setPreferredSize(new Dimension(30,30));
+		panelb.add(deleteBtn);
+		deleteBtn.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+
+				int option = JOptionPane.showConfirmDialog(null, "Yes or No?",
+						"Delete Contact", JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE);
+				if (option == JOptionPane.OK_OPTION) {
+					// Delete and update
+					caseList.removeRow(caseTable.getSelectedRow());
+					saveFile();
+				}
+			}
+		});
+
+		panel.add(panelb);
+
+	}// end method
+
 	
 	
 	/**
@@ -187,5 +246,4 @@ public class CaseList extends Module{
 	
 	
 }
-	
-	
+		
