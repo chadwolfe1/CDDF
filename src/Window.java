@@ -19,7 +19,7 @@ public class Window extends JFrame {
 	private JPanel panel = new JPanel();
 
 	ContactList cl;
-	CaseList caselist;
+	CaseList csl;
 	
 	/**
 	 * Create the GUI and show it. For thread safety, this method should be
@@ -41,10 +41,10 @@ public class Window extends JFrame {
 		panel.setPreferredSize(new Dimension(700,400));
 		
 		//Contact module list
-		cl = new ContactList();
+		this.cl = new ContactList();
 		
 		//Case module list
-		caselist = new CaseList();
+		this.csl = new CaseList();
 		
 		JTextArea welcome = new JTextArea("Welcome to Case Management System\nCDDF Enterprises");
 		welcome.setBackground(Color.white);
@@ -129,11 +129,12 @@ public class Window extends JFrame {
 				
 			}else if(e.getActionCommand().equalsIgnoreCase("Create Case")){
 				Case cs = new Case();
-				cs.FormEdit(caselist);
+				cs.FormEdit(csl);
+				
 
 			}else if(e.getActionCommand().equalsIgnoreCase("List Cases")){
 				
-				caselist.getCaseList(panel);
+				csl.getCaseList(panel);
 				
 			//etc
 			}else if(e.getActionCommand().equalsIgnoreCase("Exit")){

@@ -10,9 +10,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import java.io.*;
-import java.lang.reflect.Array;
-import java.util.*;
 
 /**
  * Case List Class
