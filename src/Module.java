@@ -155,6 +155,23 @@ abstract class Module {
 		
 	}
 	
+	/**
+	 * Test if index exists if not return empty string
+	 * @param data
+	 * @param index
+	 * @return String
+	 */
+	public static String getArrayIndex(String[] data, int index){
+	    try{
+	      return data[index];
+	    } catch(ArrayIndexOutOfBoundsException e){
+	      return "0";
+	    }
+	}
 	
-		
+	public static String strScape(String data){
+		data.replace(Constants.CSV_FIELD_SEPARATOR, " ");
+		data.replace(Constants.CSV_ROW_SEPARATOR, " ");
+		return data;
+	}
 }//end class

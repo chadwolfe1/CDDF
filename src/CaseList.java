@@ -1,4 +1,6 @@
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -6,13 +8,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import java.io.*;
-import java.lang.reflect.Array;
-import java.util.*;
 
 /**
  * Case List Class
@@ -36,12 +37,14 @@ public class CaseList extends Module{
 			}
 		};
 		
+				
 		caseList.addColumn("Case Number");
 		caseList.addColumn("Case Name");
 		caseList.addColumn("Case Description");
 		caseList.addColumn("Case Lawyer");
 		caseList.addColumn("Case Paralegal");
 		caseList.addColumn("Case Status");
+		
 		
 		readFile();
 	}

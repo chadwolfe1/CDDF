@@ -13,7 +13,7 @@ import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-public class Login   //login class
+public class Login
 {
 
 	private static void createAndShowUI()		//create user interface to enter information

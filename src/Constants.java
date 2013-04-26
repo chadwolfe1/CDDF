@@ -14,12 +14,6 @@ public interface Constants {
 	int EX_POS = 100, EY_POS = 100, EX_W = 700, EY_H = 400;
 
 	String MENU_ITEM_SEPARATOR = "___________";
-	// Menu Items.
-	String menus[] = { "File", "Tool", "Help" };
-	String filemenu[] = { "New Contact", MENU_ITEM_SEPARATOR, "New Case", "Option 2", "More option", MENU_ITEM_SEPARATOR, "Quit" };
-	String tool[] = { "Sort", "Search", "-", "Edit" };
-	String edit[] = { "Copy", "Paste" };
-	String helpmenu[] = { "Help", "About Us" };
 	
 	// Some Labels
 	String MAIN_WIN_TITLE = "Legal Cases Management";
@@ -32,12 +26,16 @@ public interface Constants {
 	String CONT_LASTNAME = "Lastname";
 	
 	String GEN_ERR_CANNOT_OPEN_FILE = "Invalid File";
+	
 	//Csv Constants
 	String APP_DATA_FOLDER = System.getProperty("user.dir")+"/data";
 	String APP_CONTACT_FILE = Constants.APP_DATA_FOLDER+"/contacts.csv";
 	
 	String CSV_FIELD_SEPARATOR = "\t";
 	String CSV_ROW_SEPARATOR = "\r\n";
+	
+	String[] CONT_CUSTOMER_TYPES = { "Customer", "Attorney", "Administrator","Paralegal", "Other" };
+	String[] CONT_STATUS = { "Inactive", "Active" };
 	
 	//About Us
 	String GEN_LBL_ABOUT_US = "About Us";
@@ -53,6 +51,9 @@ public interface Constants {
 			"Year 2013";
  
 	//The Help Contents
-	String HELP = "This will containg the help I assume";
+	String HELP = "Welcome to Help\n\n"
+			+"This support material looks pretty much like an Apple Iphone Manual...\n\n"
+			+"There is not much to say \n"
+			+"just follow the menus and enjoy.\n\n ";
 	
 }// end interface
