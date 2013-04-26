@@ -128,9 +128,14 @@ public class ContactList extends Module {
 		updateBtn.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-
+				
 				// Update
+				
 				int selected = contactTable.getSelectedRow();
+				if(selected==-1){
+					OutputBox.display(0, Constants.MAIN_WIN_TITLE, "No Item selected. \nPlease click in the row that requires modification.");
+					return;
+				}
 				Contact x = getRowContact(selected);
 				x.formEdit(new ContactList(), false);
 				updateContactListRow(x, selected);
@@ -145,13 +150,20 @@ public class ContactList extends Module {
 		deleteBtn.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-
+				
+				int selected = contactTable.getSelectedRow();
+				if(selected==-1){
+					OutputBox.display(0, Constants.MAIN_WIN_TITLE, "No Item selected. \nPlease click in the row that requires modification.");
+					return;
+				}
+				
 				int option = JOptionPane.showConfirmDialog(null, "Yes or No?",
 						"Delete Contact", JOptionPane.YES_NO_OPTION,
 						JOptionPane.WARNING_MESSAGE);
 				if (option == JOptionPane.OK_OPTION) {
 					// Delete and update
-					contactList.removeRow(contactTable.getSelectedRow());
+					
+					contactList.removeRow(selected);
 					saveFile();
 				}
 			}
