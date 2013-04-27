@@ -48,18 +48,18 @@ public class Case extends Module {
 
 public Case(String num, String name, String desc, String cname, String law, String para, String stat)
 {
-		setCaseNumber(num);
-		setCaseName(name);
-		setCaseDescription(desc);
-		setClientName(cname);
-		setLawyer(law);
-		setParalegal(para);
-		setStatus(stat);
+		this.setCaseNumber(num);
+		this.setCaseName(name);
+		this.setCaseDescription(desc);
+		this.setClientName(cname);
+		this.setLawyer(law);
+		this.setParalegal(para);
+		this.setStatus(stat);
 }
 
 public Case()
 {
-	this("","","","","","", "");
+	//this("","","","","","", "");
 }
 
 public Case(String[] row)
@@ -111,28 +111,32 @@ public void FormEdit(CaseList caselist, ContactList contactlist, boolean createR
 	{
 		Contact contact = contactlist.getRowContact(i);
 		if (contact.getContactType() == "Customer")
-			clientnames.add(contact.getLastname());	
+			clientnames.add(contact.getLastname() + ", " + contact.getFirstname());	
 		else if (contact.getContactType() == "Attorney")
-			lawyernames.add(contact.getLastname());	
+			lawyernames.add(contact.getLastname() + ", " + contact.getFirstname());	
 		else if (contact.getContactType() == "Paralegal")
-			paranames.add(contact.getLastname());	
+			paranames.add(contact.getLastname() + ", " + contact.getFirstname());	
 	}
 
 	
 	JComboBox cf3 = new JComboBox(clientnames);
+	cf3.setSelectedItem(this.getClientName());
 	panel2.add(new JLabel("Client: "));
 	panel2.add(cf3);
 	
 	JComboBox cf4 = new JComboBox(lawyernames);
+	cf4.setSelectedItem(this.getLawyer());
 	panel2.add(new JLabel("Case Lawyer: "));
 	panel2.add(cf4);
 	
 	JComboBox cf5 = new JComboBox(paranames);
+	cf5.setSelectedItem(this.getParalegal());
 	panel2.add(new JLabel("Case Paralegal: "));
 	panel2.add(cf5);
 	
 	String[] items3 = {"Inactive", "Active"};
 	JComboBox cf6 = new JComboBox(items3);
+	cf6.setSelectedItem(this.getStatus());
 	panel2.add(new JLabel("Case Status: "));
 	panel2.add(cf6);
 	
@@ -159,7 +163,12 @@ public void FormEdit(CaseList caselist, ContactList contactlist, boolean createR
 		if(this.validateRecord())
 		{
 			this.setLoaded(true);
+			if (createRow)
+			{
 			this.saveRecord(caselist);
+			}
+			
+			
 			OutputBox.display(0, "Case Module", "Case has been added");
 		}
 		else
