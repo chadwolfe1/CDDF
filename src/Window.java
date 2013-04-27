@@ -1,4 +1,4 @@
-import java.awt.BorderLayout;
+	import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -29,6 +29,7 @@ public class Window extends JFrame {
 
 	ContactList cl;
 	CaseList csl;
+	ActivityList actl;
 
 	/**
 	 * Create the GUI and show it. For thread safety, this method should be
@@ -54,6 +55,9 @@ public class Window extends JFrame {
 		
 		//Case module list
 		this.csl = new CaseList();
+		
+		//Activity module list
+		this.actl = new ActivityList();
 		
 		JTextArea welcome = new JTextArea("Welcome to Case Management System\nCDDF Enterprises");
 
@@ -137,8 +141,13 @@ public class Window extends JFrame {
 			} else if (e.getActionCommand().equalsIgnoreCase("Create Case")) {
 				Case cs = new Case();
 				cs.FormEdit(csl, cl, true);
+			} else if (e.getActionCommand().equalsIgnoreCase("Create Activity")) {
+				Activity as = new Activity();
+				as.formEdit(actl, csl, cl, true);
 			} else if (e.getActionCommand().equalsIgnoreCase("List Cases")) {
 				csl.getCaseList(panel, cl);
+			} else if (e.getActionCommand().equalsIgnoreCase("List Activities")) {
+				actl.getDisplayList(panel, cl, csl);
 			} else if (e.getActionCommand().equalsIgnoreCase("Help")) {
 				//This may be help
 				OutputBox.display(0, Constants.MAIN_WIN_TITLE, Constants.HELP);
@@ -173,7 +182,7 @@ public class Window extends JFrame {
 		menuItem1.addActionListener(new MenuAction(panel));
 		menu.add(menuItem1);
 
-		JMenuItem menuItem2 = new JMenuItem("Activities");
+		JMenuItem menuItem2 = new JMenuItem("List Activities");
 		menuItem2.addActionListener(new MenuAction(panel));
 		menu.add(menuItem2);
 
@@ -210,6 +219,19 @@ public class Window extends JFrame {
 		JMenuItem CaseMenuItem2 = new JMenuItem("Create Case");
 		CaseMenuItem2.addActionListener(new MenuAction(panel));
 		casemenu.add(CaseMenuItem2);
+		
+
+		// Act Menu
+		JMenu actMenu = new JMenu("Activities");
+		menubar.add(actMenu);
+
+		JMenuItem ActMenuItem1 = new JMenuItem("List Activities");
+		ActMenuItem1.addActionListener(new MenuAction(panel));
+		actMenu.add(ActMenuItem1);
+
+		JMenuItem ActMenuItem2 = new JMenuItem("Create Activity");
+		ActMenuItem2.addActionListener(new MenuAction(panel));
+		actMenu.add(ActMenuItem2);
 
 		//Help Menus
 		JMenu helpmenu = new JMenu("Help");
