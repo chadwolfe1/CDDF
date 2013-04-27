@@ -26,7 +26,8 @@ public class CaseList extends Module{
 
   DefaultTableModel caseList = null;
   JTable caseTable = null;
-	
+  
+  	
 	CaseList()
 	{
 		this.caseList = new DefaultTableModel()
@@ -82,16 +83,19 @@ public class CaseList extends Module{
 	/**
 	 * Display the case list
 	 */
-	void getCaseList(JPanel panel, final ContactList contact){
+	void getCaseList(JPanel panel, final ContactList contactlist){
 		
 		// Add the scroll pane to this panel.
 		panel.removeAll();
 
+			
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
 		caseTable.setPreferredScrollableViewportSize(panel
 				.getPreferredSize());
 		caseTable.setFillsViewportHeight(true);
+		
+		
 
 		// Create the scroll pane and add the table to it.
 		JScrollPane scrollPane = new JScrollPane(caseTable);
@@ -107,9 +111,10 @@ public class CaseList extends Module{
 			public void actionPerformed(ActionEvent e) {
 
 				// Update
+				
 				int selected = caseTable.getSelectedRow();
 				Case x = getRowCase(selected);
-				x.FormEdit(new CaseList(), contact, false);
+				x.FormEdit(new CaseList(), contactlist, false);
 				updateCaseListRow(x, selected);
 				saveFile();
 			}
@@ -123,7 +128,7 @@ public class CaseList extends Module{
 
 			public void actionPerformed(ActionEvent e) {
 
-				int option = JOptionPane.showConfirmDialog(null, "Yes or No?",
+				int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this case?",
 						"Delete Contact", JOptionPane.YES_NO_OPTION,
 						JOptionPane.WARNING_MESSAGE);
 				if (option == JOptionPane.OK_OPTION) {
