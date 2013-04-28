@@ -41,7 +41,7 @@ public class CaseList extends Module{
 			}
 		};
 		
-				
+		//create table headers		
 		caseList.addColumn("Case Number");
 		caseList.addColumn("Case Name");
 		caseList.addColumn("Case Description");
@@ -56,6 +56,7 @@ public class CaseList extends Module{
 		readFile();
 	}
 	
+	//read case data from string
 	Case parseLine(String sline){
 		String[] line = sline.split(Constants.CSV_FIELD_SEPARATOR);
 		//return new Case(line[0], line[1], line[2], line[3], line[4], line[5], line[6]);		
@@ -63,11 +64,13 @@ public class CaseList extends Module{
 				getArrayIndex(line, 3), getArrayIndex(line, 4), getArrayIndex(line, 5), getArrayIndex(line, 6));
 	}
 	
+	//add case
 	void addCaseList(Case cs){
 		String[] row = { cs.getCaseNumber(), cs.getCaseName(), cs.getCaseDescription(), cs.getClientName(), cs.getLawyer(), cs.getParalegal(), cs.getStatus() };
 		caseList.addRow(row);
 	}
 	
+	//update a case in the case list
 	void updateCaseListRow(Case cs, int row)
 	{
 		caseList.setValueAt(cs.getCaseNumber(),  row,  0);
@@ -186,7 +189,7 @@ public class CaseList extends Module{
 	
 	
 	/**
-	 * Saves Contact List to File
+	 * Saves Case List to File
 	 */
 	void saveFile(){
 		 try{
@@ -210,7 +213,7 @@ public class CaseList extends Module{
 	
 	
 	/**
-	 * Returns contact from List
+	 * Returns case from List
 	 * @param rowIndex
 	 * @return
 	 */
