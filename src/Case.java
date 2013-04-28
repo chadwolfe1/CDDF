@@ -1,5 +1,4 @@
 
-
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.FileOutputStream;
@@ -110,11 +109,11 @@ public void FormEdit(CaseList caselist, ContactList contactlist, boolean createR
 	for (int i =0; i < contactlist.rowCount(); i++)
 	{
 		Contact contact = contactlist.getRowContact(i);
-		if (contact.getContactType() == "Customer")
+		if (contact.getContactType().equals("Customer"))
 			clientnames.add(contact.getLastname() + ", " + contact.getFirstname());	
-		else if (contact.getContactType() == "Attorney")
+		else if (contact.getContactType().equals("Attorney"))
 			lawyernames.add(contact.getLastname() + ", " + contact.getFirstname());	
-		else if (contact.getContactType() == "Paralegal")
+		else if (contact.getContactType().equals("Paralegal"))
 			paranames.add(contact.getLastname() + ", " + contact.getFirstname());	
 	}
 
