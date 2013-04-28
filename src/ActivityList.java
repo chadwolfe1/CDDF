@@ -250,6 +250,7 @@ public class ActivityList extends Module {
 		panelc.add(new JLabel("  "));
 		panelc.add(fl3);
 		panelc.add(findCaseBtn);
+		panelc.add(new JLabel("  "));
 
 
 		// Status Search
