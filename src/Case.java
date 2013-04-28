@@ -1,4 +1,3 @@
-
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.FileOutputStream;
@@ -45,6 +44,7 @@ public class Case extends Module {
 	DefaultTableModel contactList = null;
 	JTable contactTable = null;
 
+//Case constructor
 public Case(String num, String name, String desc, String cname, String law, String para, String stat)
 {
 		this.setCaseNumber(num);
@@ -56,10 +56,12 @@ public Case(String num, String name, String desc, String cname, String law, Stri
 		this.setStatus(stat);
 }
 
+//Case constructor
 public Case()
 {
 	//this("","","","","","", "");
 }
+
 
 public Case(String[] row)
 {
@@ -75,6 +77,8 @@ public Case(String[] row)
 
 }
 
+
+//Entry window for adding and editing case information
 public void FormEdit(CaseList caselist, ContactList contactlist, boolean createRow)
 {
 	
@@ -106,6 +110,7 @@ public void FormEdit(CaseList caselist, ContactList contactlist, boolean createR
 	paranames.add("Select a Paralegel");
 	
 	
+	//Get names from the contact table
 	for (int i =0; i < contactlist.rowCount(); i++)
 	{
 		Contact contact = contactlist.getRowContact(i);
@@ -145,6 +150,7 @@ public void FormEdit(CaseList caselist, ContactList contactlist, boolean createR
 	
 	int result = JOptionPane.showConfirmDialog(null,  panel2, "Case Module", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 	
+	//if ok then save the contents of the form
 	if (result == JOptionPane.OK_OPTION)
 	{
 		this.setCaseNumber(cf0.getText());
@@ -184,6 +190,7 @@ public void FormEdit(CaseList caselist, ContactList contactlist, boolean createR
 	
 	}
 
+	//confirm that all fields are filled in
 	boolean validateRecord()
 	{
 		if (this.getCaseNumber().equals("") || this.getCaseName().equals("") || this.getCaseDescription().equals("") || this.getLawyer().equals("") || this.getParalegal().equals("") || this.getClientName().equals(""))
@@ -195,13 +202,14 @@ public void FormEdit(CaseList caselist, ContactList contactlist, boolean createR
 			return true;
 	}
 	
+	//save the case table
 	public void saveRecord(CaseList caselist)
 	{
 		caselist.addCaseList(this);
 		caselist.saveFile();
 	}
 
-
+	//open the case table file
 	public void OpenFile()
 	{
 		try
@@ -216,6 +224,7 @@ public void FormEdit(CaseList caselist, ContactList contactlist, boolean createR
 		
 	}
 	
+	//add a record to the case table file
 	public void AddRecord(List list)
 	{
 		try
@@ -229,7 +238,7 @@ public void FormEdit(CaseList caselist, ContactList contactlist, boolean createR
 		}
 	}
 	
-	
+	//close the case table file
 	public void CloseFile()
 	{
 		
