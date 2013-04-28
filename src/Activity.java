@@ -140,7 +140,7 @@ public class Activity extends Module {
 		panel1.add(new JLabel(""));
 
 		int result = JOptionPane.showConfirmDialog(null, panel1,
-				Constants.CONT_MOD_TITLE, JOptionPane.OK_CANCEL_OPTION,
+				"Activity Module", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE);
 
 		if (result == JOptionPane.OK_OPTION) {
@@ -190,12 +190,12 @@ public class Activity extends Module {
 	boolean validateRecord() {
 
 		if (this.getActType().equals("")) {
-			OutputBox.alert(Constants.CONT_MOD_TITLE, "Invalid Act Type");
+			OutputBox.alert("Activity Module", "Invalid Act Type");
 			return false;
 		}
 
 		if (this.getActDesc().equals("")) {
-			OutputBox.alert(Constants.CONT_MOD_TITLE, "Invalid Act Description");
+			OutputBox.alert("Activity Module", "Invalid Act Description");
 			return false;
 		}		
 		return true;
