@@ -1,8 +1,5 @@
-//Daniel Weston
 //Software Engineering II
 //Spring 2013
-//Assignment 6
-//My assigned task (i.e., module) is to program a screen to enter a username and password and, if that information is correct, then a screen is displayed containing the additional modules to be programmed by the other members of the group.
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -13,7 +10,7 @@ import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-public class Login
+public class login
 {
 
 	private static void createAndShowUI()		//create user interface to enter information
@@ -28,30 +25,8 @@ public class Login
 
 			if (name.equals("Admin") && pWord.equals("Password"))   //If username and password correct, create next module
 			{
-				JFrame frame = new JFrame("Main Application");
-				JLabel label = new JLabel("Main Application", SwingConstants.CENTER);
-				label.setPreferredSize(new Dimension(400, 300));
-				frame.getContentPane().add(label);
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.pack();
-				frame.setLocationRelativeTo(null);
+				Window frame = new Window();
 				frame.setVisible(true);
-				
-				MyJFrame f = new MyJFrame(Constants.TITLE);
-				f.setBackground(Color.WHITE);
-		
-				Toolkit tk = f.getToolkit();
-				Dimension size = tk.getScreenSize();		
-				
-				//Adding buttons
-				MyJButton b = new MyJButton(f);
-				b.add_buttons();
-		
-				Rectangle r = new Rectangle(Constants.X_POS, Constants.Y_POS, size.width/Constants.X_FACTOR, 
-				size.height/Constants.Y_FACTOR);
-				f.setBounds(r);
-		
-				if(!f.isVisible()) f.setVisible(true);
 			}
 		
 			else	//if username and password is incorrect
